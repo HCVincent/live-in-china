@@ -1,9 +1,10 @@
+import { Dialog } from "@/components/ui/dialog";
 import { closeModal } from "@/redux/modal-slice";
 import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import Modal from "../ui/modal";
 import { LoginModal } from "./login-modal";
 import { SignupModal } from "./signup-modal";
+import { useEffect, useState } from "react";
 
 export const RootModal: React.FC = () => {
   const dispatch = useDispatch();
@@ -15,9 +16,9 @@ export const RootModal: React.FC = () => {
   );
 
   return (
-    <Modal open={isModalOpen} onClose={() => dispatch(closeModal())}>
+    <Dialog open={isModalOpen} onOpenChange={() => dispatch(closeModal())}>
       {activeModal === "login" && <LoginModal />}
       {activeModal === "signup" && <SignupModal />}
-    </Modal>
+    </Dialog>
   );
 };
