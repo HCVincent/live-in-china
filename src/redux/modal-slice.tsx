@@ -1,10 +1,10 @@
 // modalSlice.ts
 
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 type ModalState = {
   isModalOpen: boolean;
-  activeModal: "login" | "signup";
+  activeModal: "login" | "signup" | "emailcode";
 };
 
 const initialState: ModalState = {
@@ -24,12 +24,20 @@ const modalSlice = createSlice({
       state.isModalOpen = true;
       state.activeModal = "signup";
     },
+    showEmailCodeModal: (state) => {
+      state.isModalOpen = true;
+      state.activeModal = "emailcode";
+    },
     closeModal: (state) => {
       state.isModalOpen = false;
     },
   },
 });
 
-export const { showLoginModal, showSignupModal, closeModal } =
-  modalSlice.actions;
+export const {
+  showLoginModal,
+  showSignupModal,
+  closeModal,
+  showEmailCodeModal,
+} = modalSlice.actions;
 export default modalSlice.reducer;

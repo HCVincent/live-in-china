@@ -4,7 +4,7 @@ import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { LoginModal } from "./login-modal";
 import { SignupModal } from "./signup-modal";
-import { useEffect, useState } from "react";
+import { EmailCodeModal } from "./email-code-modal";
 
 export const RootModal: React.FC = () => {
   const dispatch = useDispatch();
@@ -19,6 +19,7 @@ export const RootModal: React.FC = () => {
     <Dialog open={isModalOpen} onOpenChange={() => dispatch(closeModal())}>
       {activeModal === "login" && <LoginModal />}
       {activeModal === "signup" && <SignupModal />}
+      {activeModal === "emailcode" && <EmailCodeModal />}
     </Dialog>
   );
 };

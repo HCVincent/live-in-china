@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-liveinchina-dev-93736-authRole",
+      "UnauthRoleArn": "arn:aws:iam::186705978014:role/amplify-liveinchina-dev-93736-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::186705978014:role/amplify-liveinchina-dev-93736-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-liveinchina-dev-93736-deployment",
+      "UnauthRoleName": "amplify-liveinchina-dev-93736-unauthRole",
+      "StackName": "amplify-liveinchina-dev-93736",
+      "StackId": "arn:aws:cloudformation:us-east-1:186705978014:stack/amplify-liveinchina-dev-93736/c0e6cc90-7144-11ee-8993-0a7b55c5ce4f",
+      "AmplifyAppId": "d24pwnd35ax196"
+    },
+    "categories": {
+      "auth": {
+        "liveinchinae3823e48": {}
+      }
+    }
+  }
+}

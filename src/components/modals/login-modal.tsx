@@ -1,11 +1,13 @@
+import { closeModal, showSignupModal } from "@/redux/modal-slice";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Auth } from "aws-amplify";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { showLoginModal, showSignupModal } from "@/redux/modal-slice";
+import { useDispatch, useSelector } from "react-redux";
 import * as z from "zod";
+import { Button } from "../ui/button";
 import {
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -18,8 +20,9 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { RootState } from "@/redux/store";
+import { setLoginField } from "@/redux/form-data-slice";
 
 const formSchema = z.object({
   email: z
@@ -34,17 +37,33 @@ const formSchema = z.object({
     message: "Password is required, 6 characters at least.",
   }),
 });
-const onSubmit = () => {};
+
 export const LoginModal: React.FC = () => {
   const dispatch = useDispatch();
-
+  const [error, setError] = useState<string | null>(null);
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: useSelector((state: RootState) => state.formData.login),
   });
+  async function signIn(data: any) {
+    try {
+      const { email, password } = data;
+      await Auth.signIn(email, password);
+      dispatch(closeModal());
+      // Dispatch a custom event
+      window.dispatchEvent(new CustomEvent("userLoggedIn"));
+    } catch (error: any) {
+      setError(error.message || "An error occurred.");
+      console.log("error signing in", error);
+    }
+  }
+  const onSubmit = (data: any) => {
+    signIn(data);
+  };
+
+  const clearErrorMessage = () => {
+    setError("");
+  };
   return (
     <DialogContent className="p-0 overflow-hidden">
       <DialogHeader className="pt-8 px-6">
@@ -69,9 +88,14 @@ export const LoginModal: React.FC = () => {
                         className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
                         placeholder="type email..."
                         {...field}
+                        onChange={(e) => {
+                          dispatch(setLoginField({ email: e.target.value }));
+                          clearErrorMessage();
+                          field.onChange(e); // Important: call the original onChange
+                        }}
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="flex justify-start px-3" />
                   </FormItem>
                 )}
               />
@@ -90,9 +114,19 @@ export const LoginModal: React.FC = () => {
                           className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
                           placeholder="type password..."
                           {...field}
+                          onChange={(e) => {
+                            clearErrorMessage();
+                            dispatch(
+                              setLoginField({ password: e.target.value })
+                            );
+                            field.onChange(e); // Important: call the original onChange
+                          }}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="flex justify-start px-3" />
+                      <div className="flex justify-start px-3 text-red-500">
+                        {error}
+                      </div>
                     </FormItem>
                   </>
                 )}
