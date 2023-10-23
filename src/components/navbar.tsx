@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import { Button } from "./ui/button";
 import AuthButton from "./auth-buttons";
 import { ModeToggle } from "./mode-toggle";
 
